@@ -5,5 +5,5 @@ Indie horror AI game, where you need to hit monsters with box
 
 To import to Intellij IDEA: File->Open->hitbox.ipr
 
-This project was built using [LibGDX framework](https://libgdx.badlogicgames.com/) along with the Flow Field 
+This project was built using [LibGDX framework](https://libgdx.badlogicgames.com/) and Flow Field 
 pathfinding algorithm.
