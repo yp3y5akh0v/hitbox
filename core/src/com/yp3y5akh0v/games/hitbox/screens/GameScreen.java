@@ -193,6 +193,8 @@ public class GameScreen implements Screen, ContactListener, PushListener {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 hitbox.screenManager.setScreen(new MenuScreen(hitbox));
+                // clear time score, need to modify
+                hitbox.timeScore.clear();
                 hitbox.setScreen(hitbox.screenManager.peek());
             }
         });
@@ -212,6 +214,8 @@ public class GameScreen implements Screen, ContactListener, PushListener {
                     hitbox.setScreen(hitbox.screenManager.peek());
                 } catch (Exception e) {
                     hitbox.screenManager.setScreen(new MenuScreen(hitbox));
+                    // clear time score, need to modify
+                    hitbox.timeScore.clear();
                     hitbox.setScreen(hitbox.screenManager.peek());
                 }
             }
@@ -236,6 +240,8 @@ public class GameScreen implements Screen, ContactListener, PushListener {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 hitbox.screenManager.setScreen(new MenuScreen(hitbox));
+                // clear time score, need to modify
+                hitbox.timeScore.clear();
                 hitbox.setScreen(hitbox.screenManager.peek());
             }
         });

@@ -62,6 +62,8 @@ public class PauseScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 hitbox.musicManager.stop("game");
                 hitbox.screenManager.setScreen(new MenuScreen(hitbox));
+                // clear time score, need to modify
+                hitbox.timeScore.clear();
                 hitbox.setScreen(hitbox.screenManager.peek());
             }
         });

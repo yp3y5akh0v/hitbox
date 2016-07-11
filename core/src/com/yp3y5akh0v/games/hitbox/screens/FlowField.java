@@ -155,7 +155,7 @@ public class FlowField implements TargetChangedListener, BoxChangedListener {
 
     @Override
     public void targetRemoved(TargetChangedEvent tce) {
-//        need to modify if MultiPlayer. In progress... :D
+//        need to modify if MultiPlayer. In development process... :D
         resetAll();
         targetRemoved = true;
     }

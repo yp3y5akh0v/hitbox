@@ -31,6 +31,7 @@ public class HitBox extends Game {
     @Override
     public void create() {
 
+        // time score array for statistics in development process...
         timeScore = new Array<>();
 
         screenManager = new ScreenManager();
