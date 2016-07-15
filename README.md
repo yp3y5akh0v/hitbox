@@ -14,7 +14,7 @@ Mobile versions (Android, IOS) are still in development process, but you can tes
 
 ### How to compile
 - Download gradle tool from [here](https://gradle.org/)
-- Use `gradlew.bat` (for Windows) or `./gradlew tasks` (for Unix) command
+- Use `gradlew.bat tasks` (for Windows) or `./gradlew tasks` (for Unix) command
 
 *If an error occurs after compiling try to change sourceCompatibility parameter from `build.gradle` files* 
 
