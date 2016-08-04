@@ -21,4 +21,3 @@ Mobile versions (Android, IOS) are still in development process, but you can tes
 ### How to run
 - Use `gradlew.bat desktop:run` (for Windows) or `./gradlew desktop:run` (for Unix) command
 
-*If you have any questions about this project or if you find bugs :) leave comments here or send me an email to <code>yuriy.peysakhov@gmail.com</code>*
