@@ -248,7 +248,6 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         gameOverStage.addActor(goToMenuTextButton);
 
         inputMultiplexer = new InputMultiplexer(gameStage, uiStage, winStage, gameOverStage);
-        Gdx.input.setInputProcessor(inputMultiplexer);
 
         //    Bot start chasing player :D !
         flowField.init();
@@ -337,6 +336,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override

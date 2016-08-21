@@ -35,7 +35,6 @@ public class PauseScreen implements Screen {
         this.hitbox = hitbox;
 
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
 
         uiSkin = new Skin(Gdx.files.internal("font/default.json"));
 
@@ -82,6 +81,7 @@ public class PauseScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
