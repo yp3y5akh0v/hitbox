@@ -41,7 +41,7 @@ import java.util.HashMap;
 
 public class GameScreen implements Screen, ContactListener, PushListener {
 
-    public HitBox hitbox;
+    public final HitBox hitbox;
 
     public Stage gameStage;
     public Stage uiStage;
@@ -67,7 +67,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
     public TiledMap map;
     public TiledMapRenderer mapRenderer;
-    public String levelName;
+    public final String levelName;
     public int mapWidth;
     public int mapHeight;
     public int tilePixelWidth;
@@ -86,7 +86,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
     public InputMultiplexer inputMultiplexer;
 
-    public GameScreen(String levelName, HitBox hitbox) {
+    public GameScreen(final String levelName, final HitBox hitbox) {
 
         this.levelName = levelName;
         this.hitbox = hitbox;
@@ -156,7 +156,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         gameOverStage = new Stage(gameStage.getViewport());
 
 //        UI Skin
-        uiSkin = new Skin(Gdx.files.internal("fonts/uiskin.json"));
+        uiSkin = new Skin(Gdx.files.internal("font/default.json"));
 
 //        Count Box status
         countBoxLabel = new Label("Box: " + boxes.size, uiSkin, "default");
@@ -248,6 +248,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         gameOverStage.addActor(goToMenuTextButton);
 
         inputMultiplexer = new InputMultiplexer(gameStage, uiStage, winStage, gameOverStage);
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         //    Bot start chasing player :D !
         flowField.init();
@@ -336,7 +337,6 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override

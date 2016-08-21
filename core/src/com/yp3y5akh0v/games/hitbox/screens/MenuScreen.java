@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 public class MenuScreen implements Screen {
 
-    public HitBox hitBox;
+    public final HitBox hitBox;
     public Stage stage;
     public Table uiTable;
     public Label gameTitle;
@@ -28,12 +28,12 @@ public class MenuScreen implements Screen {
     public Label copyRightLabel;
     public Skin uiSkin;
 
-    public MenuScreen(HitBox hitBox) {
+    public MenuScreen(final HitBox hitBox) {
         this.hitBox = hitBox;
 
 //      Create stage
         stage = new Stage(new ScreenViewport());
-        uiSkin = new Skin(Gdx.files.internal("fonts/uiskin.json"));
+        uiSkin = new Skin(Gdx.files.internal("font/default.json"));
 
 //        Create game title
         gameTitle = new Label("HitBox", uiSkin, "default");

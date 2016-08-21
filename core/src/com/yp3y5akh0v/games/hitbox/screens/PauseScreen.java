@@ -18,7 +18,7 @@ import com.yp3y5akh0v.games.hitbox.HitBox;
 
 public class PauseScreen implements Screen {
 
-    public HitBox hitbox;
+    public final HitBox hitbox;
 
     public Stage stage;
 
@@ -31,18 +31,18 @@ public class PauseScreen implements Screen {
     public Table uiTable;
     public Skin uiSkin;
 
-    public PauseScreen(HitBox hitbox) {
+    public PauseScreen(final HitBox hitbox) {
         this.hitbox = hitbox;
 
         stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
 
-        uiSkin = new Skin(Gdx.files.internal("fonts/uiskin.json"));
+        uiSkin = new Skin(Gdx.files.internal("font/default.json"));
 
         pausedLabel = new Label("Paused", uiSkin, "default");
 
-        GameScreen gs = (GameScreen) hitbox.screenManager.peek();
-
-        timeElapsedLabel = new Label("Time elapsed: " + (long) gs.timeElapsed + " s", uiSkin, "default");
+        timeElapsedLabel = new Label("Time elapsed: " + (long) ((GameScreen) hitbox.screenManager.peek())
+                .timeElapsed + " s", uiSkin, "default");
         timeElapsedLabel.setAlignment(Align.center);
 
         resumeTextButton = new TextButton("Resume", uiSkin, "default");
@@ -50,7 +50,7 @@ public class PauseScreen implements Screen {
         resumeTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gs.isPaused = false;
+                ((GameScreen) hitbox.screenManager.peek()).isPaused = false;
                 hitbox.setScreen(hitbox.screenManager.peek());
             }
         });
@@ -82,7 +82,6 @@ public class PauseScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
