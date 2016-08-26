@@ -52,6 +52,7 @@ public class PauseScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((GameScreen) parent).isPaused = false;
+                hitbox.musicManager.play("game");
                 hitbox.setScreen(parent);
             }
         });
@@ -91,6 +92,7 @@ public class PauseScreen implements Screen {
         update(delta);
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             ((GameScreen) parent).isPaused = false;
+            hitbox.musicManager.play("game");
             hitbox.setScreen(parent);
         }
         stage.draw();

@@ -1,6 +1,9 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.8
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "com.yp3y5akh0v.games.hitbox.desktop.DesktopLauncher"
