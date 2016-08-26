@@ -19,6 +19,7 @@ import com.yp3y5akh0v.games.hitbox.HitBox;
 public class PauseScreen implements Screen {
 
     public final HitBox hitbox;
+    public final Screen parent;
 
     public Stage stage;
 
@@ -31,8 +32,9 @@ public class PauseScreen implements Screen {
     public Table uiTable;
     public Skin uiSkin;
 
-    public PauseScreen(final HitBox hitbox) {
+    public PauseScreen(final HitBox hitbox, final Screen parent) {
         this.hitbox = hitbox;
+        this.parent = parent;
 
         stage = new Stage(new ScreenViewport());
 
@@ -40,7 +42,7 @@ public class PauseScreen implements Screen {
 
         pausedLabel = new Label("Paused", uiSkin, "default");
 
-        timeElapsedLabel = new Label("Time elapsed: " + (long) ((GameScreen) hitbox.screenManager.peek())
+        timeElapsedLabel = new Label("Time elapsed: " + (long) ((GameScreen) parent)
                 .timeElapsed + " s", uiSkin, "default");
         timeElapsedLabel.setAlignment(Align.center);
 
@@ -49,8 +51,8 @@ public class PauseScreen implements Screen {
         resumeTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((GameScreen) hitbox.screenManager.peek()).isPaused = false;
-                hitbox.setScreen(hitbox.screenManager.peek());
+                ((GameScreen) parent).isPaused = false;
+                hitbox.setScreen(parent);
             }
         });
 
@@ -60,10 +62,9 @@ public class PauseScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 hitbox.musicManager.stop("game");
-                hitbox.screenManager.setScreen(new MenuScreen(hitbox));
                 // clear time score, need to modify
                 hitbox.timeScore.clear();
-                hitbox.setScreen(hitbox.screenManager.peek());
+                hitbox.setScreen(new MenuScreen(hitbox));
             }
         });
 
@@ -89,8 +90,8 @@ public class PauseScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         update(delta);
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            ((GameScreen) hitbox.screenManager.peek()).isPaused = false;
-            hitbox.setScreen(hitbox.screenManager.peek());
+            ((GameScreen) parent).isPaused = false;
+            hitbox.setScreen(parent);
         }
         stage.draw();
     }

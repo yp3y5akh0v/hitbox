@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -26,6 +25,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.yp3y5akh0v.games.hitbox.HitBox;
 import com.yp3y5akh0v.games.hitbox.actors.Block;
@@ -117,26 +118,46 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         flowField = new FlowField(this);
 
         blocks = new Array<>();
-        loadBlocks();
+        try {
+            loadBlocks();
+        } catch (ReflectionException e) {
+            e.printStackTrace();
+            Gdx.app.exit();
+        }
 
         for (Block block : blocks)
             gameStage.addActor(block);
 
         boxes = new Array<>();
-        loadBoxes();
+        try {
+            loadBoxes();
+        } catch (ReflectionException e) {
+            e.printStackTrace();
+            Gdx.app.exit();
+        }
 
         for (Box box : boxes)
             gameStage.addActor(box);
 
 //         Create player
-        loadPlayer();
+        try {
+            loadPlayer();
+        } catch (ReflectionException e) {
+            e.printStackTrace();
+            Gdx.app.exit();
+        }
         gameStage.addActor(player);
 
         gameStage.setKeyboardFocus(player);
 
 //         Create bots
         bots = new Array<>();
-        loadBots();
+        try {
+            loadBots();
+        } catch (ReflectionException e) {
+            e.printStackTrace();
+            Gdx.app.exit();
+        }
         for (Bot bot : bots)
             gameStage.addActor(bot);
 
@@ -192,10 +213,9 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         imDoneTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                hitbox.screenManager.setScreen(new MenuScreen(hitbox));
                 // clear time score, need to modify
                 hitbox.timeScore.clear();
-                hitbox.setScreen(hitbox.screenManager.peek());
+                hitbox.setScreen(new MenuScreen(hitbox));
             }
         });
         winStage.addActor(imDoneTextButton);
@@ -210,13 +230,11 @@ public class GameScreen implements Screen, ContactListener, PushListener {
             public void clicked(InputEvent event, float x, float y) {
                 String nextLevel = String.format("%03d", Integer.parseInt(levelName) + 1);
                 try {
-                    hitbox.screenManager.setScreen(new GameScreen(nextLevel, hitbox));
-                    hitbox.setScreen(hitbox.screenManager.peek());
+                    hitbox.setScreen(new GameScreen(nextLevel, hitbox));
                 } catch (Exception e) {
-                    hitbox.screenManager.setScreen(new MenuScreen(hitbox));
                     // clear time score, need to modify
                     hitbox.timeScore.clear();
-                    hitbox.setScreen(hitbox.screenManager.peek());
+                    hitbox.setScreen(new MenuScreen(hitbox));
                 }
             }
         });
@@ -239,10 +257,9 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         goToMenuTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                hitbox.screenManager.setScreen(new MenuScreen(hitbox));
                 // clear time score, need to modify
                 hitbox.timeScore.clear();
-                hitbox.setScreen(hitbox.screenManager.peek());
+                hitbox.setScreen(new MenuScreen(hitbox));
             }
         });
         gameOverStage.addActor(goToMenuTextButton);
@@ -254,11 +271,11 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         player.fireTargetChangedEvent();
     }
 
-    public void loadBoxes() {
-        for (MapObject blockObject : map.getLayers()
+    public void loadBoxes() throws ReflectionException {
+        for (Object blockObject : map.getLayers()
                 .get("box_object")
                 .getObjects()
-                .getByType(RectangleMapObject.class)) {
+                .getByType(ClassReflection.forName("com.badlogic.gdx.maps.objects.RectangleMapObject"))) {
             Rectangle rect = ((RectangleMapObject) blockObject).getRectangle();
             int row = (int) (rect.getX() / rect.getWidth());
             int column = (int) (rect.getY() / rect.getHeight());
@@ -274,11 +291,11 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         }
     }
 
-    public void loadBlocks() {
-        for (MapObject blockObject : map.getLayers()
+    public void loadBlocks() throws ReflectionException {
+        for (Object blockObject : map.getLayers()
                 .get("block_object")
                 .getObjects()
-                .getByType(RectangleMapObject.class)) {
+                .getByType(ClassReflection.forName("com.badlogic.gdx.maps.objects.RectangleMapObject"))) {
             Rectangle rect = ((RectangleMapObject) blockObject).getRectangle();
             int row = (int) (rect.getX() / rect.getWidth());
             int column = (int) (rect.getY() / rect.getHeight());
@@ -291,11 +308,11 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         }
     }
 
-    public void loadPlayer() {
-        for (MapObject blockObject : map.getLayers()
+    public void loadPlayer() throws ReflectionException {
+        for (Object blockObject : map.getLayers()
                 .get("player_object")
                 .getObjects()
-                .getByType(RectangleMapObject.class)) {
+                .getByType(ClassReflection.forName("com.badlogic.gdx.maps.objects.RectangleMapObject"))) {
             Rectangle rect = ((RectangleMapObject) blockObject).getRectangle();
             int row = (int) (rect.getX() / rect.getWidth());
             int column = (int) (rect.getY() / rect.getHeight());
@@ -313,11 +330,11 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         }
     }
 
-    public void loadBots() {
-        for (MapObject blockObject : map.getLayers()
+    public void loadBots() throws ReflectionException {
+        for (Object blockObject : map.getLayers()
                 .get("bot_object")
                 .getObjects()
-                .getByType(RectangleMapObject.class)) {
+                .getByType(ClassReflection.forName("com.badlogic.gdx.maps.objects.RectangleMapObject"))) {
             Rectangle rect = ((RectangleMapObject) blockObject).getRectangle();
             int row = (int) (rect.getX() / rect.getWidth());
             int column = (int) (rect.getY() / rect.getHeight());
@@ -347,7 +364,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         update(delta);
         if (!isPaused && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             isPaused = true;
-            hitbox.setScreen(new PauseScreen(hitbox));
+            hitbox.setScreen(new PauseScreen(hitbox, this));
         }
         mapRenderer.render();
         gameStage.draw();

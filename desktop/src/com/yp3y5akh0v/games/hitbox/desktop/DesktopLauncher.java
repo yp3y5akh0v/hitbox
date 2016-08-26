@@ -8,8 +8,7 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = HitBox.TITLE;
-        config.backgroundFPS = 60;
-        config.foregroundFPS = 60;
+        config.resizable = false;
         config.width = HitBox.GAME_WIDTH;
         config.height = HitBox.GAME_HEIGHT;
         new LwjglApplication(new HitBox(), config);

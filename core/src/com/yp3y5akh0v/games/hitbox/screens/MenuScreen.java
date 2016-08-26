@@ -44,8 +44,7 @@ public class MenuScreen implements Screen {
         playTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                hitBox.screenManager.setScreen(new GameScreen("000", hitBox));
-                hitBox.setScreen(hitBox.screenManager.peek());
+                hitBox.setScreen(new GameScreen("000", hitBox));
             }
         });
 
