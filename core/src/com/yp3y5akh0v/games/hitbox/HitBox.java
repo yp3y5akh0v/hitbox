@@ -15,8 +15,8 @@ import com.yp3y5akh0v.games.hitbox.screens.MenuScreen;
 public class HitBox extends Game {
 
     public static final String TITLE = "HitBox";
-    public static final int GAME_WIDTH = 1024;
-    public static final int GAME_HEIGHT = 800;
+    public static final int GAME_WIDTH = 800;
+    public static final int GAME_HEIGHT = 640;
 
     public SoundManager soundManager;
     public MusicManager musicManager;

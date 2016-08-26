@@ -27,14 +27,6 @@ public class MusicManager {
         musics.get(key).setLooping(isLooping);
     }
 
-    public void removeMusic(String key) {
-        Music music = musics.get(key);
-        if (music != null) {
-            music.dispose();
-            musics.remove(key);
-        }
-    }
-
     public void setVolume(String key, float volume) {
         musics.get(key).setVolume(volume);
     }
@@ -43,8 +35,8 @@ public class MusicManager {
         musics.get(key).stop();
     }
 
-    public Music getMusic(String key) {
-        return musics.get(key);
+    public void pause(String key) {
+        musics.get(key).pause();
     }
 
     public void dispose() {

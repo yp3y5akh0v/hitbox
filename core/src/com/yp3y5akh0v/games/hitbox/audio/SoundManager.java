@@ -29,18 +29,6 @@ public class SoundManager {
         return sound != null ? sound.play(volume, pitch, pan) : null;
     }
 
-    public void removeSound(String key) {
-        Sound sound = sounds.get(key);
-        if (sound != null) {
-            sound.dispose();
-            sounds.remove(key);
-        }
-    }
-
-    public Sound getSound(String key) {
-        return sounds.get(key);
-    }
-
     public void dispose() {
         for (Sound sound : sounds.values())
             sound.dispose();

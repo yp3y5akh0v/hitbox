@@ -64,7 +64,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
     public TextButton imDoneTextButton;
     public TextButton nextTextButton;
-    public TextButton goToMenuTextButton;
+    public TextButton menuTextButton;
 
     public TiledMap map;
     public TiledMapRenderer mapRenderer;
@@ -249,12 +249,12 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         gameOverStage.addActor(gameOverLabel);
 
 //        Create go to menu text button
-        goToMenuTextButton = new TextButton("Go to menu", uiSkin, "default");
-        goToMenuTextButton.setPosition(gameStage.getWidth() / 2 - goToMenuTextButton.getWidth() / 2,
-                gameStage.getHeight() / 2 - gameOverLabel.getHeight() - goToMenuTextButton.getHeight() / 2);
-        goToMenuTextButton.setVisible(false);
-        goToMenuTextButton.setTouchable(Touchable.enabled);
-        goToMenuTextButton.addListener(new ClickListener() {
+        menuTextButton = new TextButton("Menu", uiSkin, "default");
+        menuTextButton.setPosition(gameStage.getWidth() / 2 - menuTextButton.getWidth() / 2,
+                gameStage.getHeight() / 2 - gameOverLabel.getHeight() - menuTextButton.getHeight() / 2);
+        menuTextButton.setVisible(false);
+        menuTextButton.setTouchable(Touchable.enabled);
+        menuTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // clear time score, need to modify
@@ -262,7 +262,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
                 hitbox.setScreen(new MenuScreen(hitbox));
             }
         });
-        gameOverStage.addActor(goToMenuTextButton);
+        gameOverStage.addActor(menuTextButton);
 
         inputMultiplexer = new InputMultiplexer(gameStage, uiStage, winStage, gameOverStage);
 
@@ -364,6 +364,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         update(delta);
         if (!isPaused && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             isPaused = true;
+            hitbox.musicManager.pause("game");
             hitbox.setScreen(new PauseScreen(hitbox, this));
         }
         mapRenderer.render();

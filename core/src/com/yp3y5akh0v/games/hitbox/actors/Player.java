@@ -333,7 +333,7 @@ public class Player extends Actor implements ControllerListener {
         GameScreen gs = getGameScreen();
         gs.isGameOver = true;
         gs.gameOverLabel.setVisible(true);
-        gs.goToMenuTextButton.setVisible(true);
+        gs.menuTextButton.setVisible(true);
         gs.vectorActor.remove(getDiscretePosition());
         gs.gameStage.getRoot().removeActor(this);
         fireTargetRemoved();

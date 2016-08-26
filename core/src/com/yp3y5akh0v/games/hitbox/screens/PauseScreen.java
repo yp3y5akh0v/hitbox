@@ -27,7 +27,7 @@ public class PauseScreen implements Screen {
     public Label timeElapsedLabel;
 
     public TextButton resumeTextButton;
-    public TextButton goToMenuTextButton;
+    public TextButton menuTextButton;
 
     public Table uiTable;
     public Skin uiSkin;
@@ -56,9 +56,9 @@ public class PauseScreen implements Screen {
             }
         });
 
-        goToMenuTextButton = new TextButton("Go to menu", uiSkin, "default");
-        goToMenuTextButton.setTouchable(Touchable.enabled);
-        goToMenuTextButton.addListener(new ClickListener() {
+        menuTextButton = new TextButton("Menu", uiSkin, "default");
+        menuTextButton.setTouchable(Touchable.enabled);
+        menuTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 hitbox.musicManager.stop("game");
@@ -74,7 +74,7 @@ public class PauseScreen implements Screen {
         uiTable.add(pausedLabel).colspan(2);
         uiTable.row();
         uiTable.add(resumeTextButton);
-        uiTable.add(goToMenuTextButton);
+        uiTable.add(menuTextButton);
         uiTable.row();
         uiTable.add(timeElapsedLabel).colspan(2).center().padTop(50);
         stage.addActor(uiTable);
