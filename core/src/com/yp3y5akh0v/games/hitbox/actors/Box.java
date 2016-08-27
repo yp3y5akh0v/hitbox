@@ -33,8 +33,6 @@ public class Box extends Actor {
     public float x0Left, x1Left, x0Right, x1Right;
     public float y0Down, y1Down, y0Up, y1Up;
 
-    public Vector2 startPosition;
-
     public Box(Texture texture, Rectangle rect,
                ContactListener contactListener,
                BoxChangedListener boxChangedListener) {
@@ -92,6 +90,7 @@ public class Box extends Actor {
                         setPosition(x1Left, getY());
                         curDT = 0;
                         x0Left = x1Left;
+                        Vector2 prevPosition = new Vector2(x0Left, getY());
                         x1Left = x0Left - gs.tilePixelWidth;
                         Vector2 vnLeft = new Vector2(x1Left, getY());
                         Actor nLeft = vectorActor.get(vnLeft);
@@ -108,9 +107,9 @@ public class Box extends Actor {
                             } else {
                                 curDirect = UNKNOWN;
                                 curStatus = STOP;
-                                fireBoxChangedPositionEvent(startPosition);
                             }
                         } else {
+                            fireBoxChangedPositionEvent(prevPosition);
                             vectorActor.remove(getPosition());
                             vectorActor.put(vnLeft, this);
                         }
@@ -124,6 +123,7 @@ public class Box extends Actor {
                         setPosition(x1Right, getY());
                         curDT = 0;
                         x0Right = x1Right;
+                        Vector2 prevPosition = new Vector2(x0Right, getY());
                         x1Right = x0Right + gs.tilePixelWidth;
                         Vector2 vnRight = new Vector2(x1Right, getY());
                         Actor nRight = vectorActor.get(vnRight);
@@ -140,9 +140,9 @@ public class Box extends Actor {
                             } else {
                                 curDirect = UNKNOWN;
                                 curStatus = STOP;
-                                fireBoxChangedPositionEvent(startPosition);
                             }
                         } else {
+                            fireBoxChangedPositionEvent(prevPosition);
                             vectorActor.remove(getPosition());
                             vectorActor.put(vnRight, this);
                         }
@@ -156,6 +156,7 @@ public class Box extends Actor {
                         setPosition(getX(), y1Up);
                         curDT = 0;
                         y0Up = y1Up;
+                        Vector2 prevPosition = new Vector2(getX(), y0Up);
                         y1Up = y0Up + gs.tilePixelHeight;
                         Vector2 vnUp = new Vector2(getX(), y1Up);
                         Actor nUp = vectorActor.get(vnUp);
@@ -172,9 +173,9 @@ public class Box extends Actor {
                             } else {
                                 curDirect = UNKNOWN;
                                 curStatus = STOP;
-                                fireBoxChangedPositionEvent(startPosition);
                             }
                         } else {
+                            fireBoxChangedPositionEvent(prevPosition);
                             vectorActor.remove(getPosition());
                             vectorActor.put(vnUp, this);
                         }
@@ -188,6 +189,7 @@ public class Box extends Actor {
                         setPosition(getX(), y1Down);
                         curDT = 0;
                         y0Down = y1Down;
+                        Vector2 prevPosition = new Vector2(getX(), y0Down);
                         y1Down = y0Down - gs.tilePixelHeight;
                         Vector2 vnDown = new Vector2(getX(), y1Down);
                         Actor nDown = vectorActor.get(vnDown);
@@ -204,9 +206,9 @@ public class Box extends Actor {
                             } else {
                                 curDirect = UNKNOWN;
                                 curStatus = STOP;
-                                fireBoxChangedPositionEvent(startPosition);
                             }
                         } else {
+                            fireBoxChangedPositionEvent(prevPosition);
                             vectorActor.remove(getPosition());
                             vectorActor.put(vnDown, this);
                         }
@@ -219,7 +221,7 @@ public class Box extends Actor {
     public void startMoveRight() {
         GameScreen gs = getGameScreen();
         x0Right = getX();
-        startPosition = new Vector2(x0Right, getY());
+        Vector2 prevPosition = new Vector2(x0Right, getY());
         x1Right = x0Right + gs.tilePixelWidth;
         HashMap<Vector2, Actor> vectorActor = gs.vectorActor;
         Vector2 vnRight = new Vector2(x1Right, getY());
@@ -246,13 +248,14 @@ public class Box extends Actor {
             vectorActor.put(vnRight, this);
             curDirect = RIGHT;
             curStatus = MOVE;
+            fireBoxChangedPositionEvent(prevPosition);
         }
     }
 
     public void startMoveLeft() {
         GameScreen gs = getGameScreen();
         x0Left = getX();
-        startPosition = new Vector2(x0Left, getY());
+        Vector2 prevPosition = new Vector2(x0Left, getY());
         x1Left = x0Left - gs.tilePixelWidth;
         HashMap<Vector2, Actor> vectorActor = gs.vectorActor;
         Vector2 vnLeft = new Vector2(x1Left, getY());
@@ -280,13 +283,14 @@ public class Box extends Actor {
             vectorActor.put(vnLeft, this);
             curDirect = LEFT;
             curStatus = MOVE;
+            fireBoxChangedPositionEvent(prevPosition);
         }
     }
 
     public void startMoveUp() {
         GameScreen gs = getGameScreen();
         y0Up = getY();
-        startPosition = new Vector2(getX(), y0Up);
+        Vector2 prevPosition = new Vector2(getX(), y0Up);
         y1Up = y0Up + gs.tilePixelHeight;
         HashMap<Vector2, Actor> vectorActor = gs.vectorActor;
         Vector2 vnUp = new Vector2(getX(), y1Up);
@@ -314,13 +318,14 @@ public class Box extends Actor {
             vectorActor.put(vnUp, this);
             curDirect = UP;
             curStatus = MOVE;
+            fireBoxChangedPositionEvent(prevPosition);
         }
     }
 
     public void startMoveDown() {
         GameScreen gs = getGameScreen();
         y0Down = getY();
-        startPosition = new Vector2(getX(), y0Down);
+        Vector2 prevPosition = new Vector2(getX(), y0Down);
         y1Down = y0Down - gs.tilePixelHeight;
         HashMap<Vector2, Actor> vectorActor = gs.vectorActor;
         Vector2 vnDown = new Vector2(getX(), y1Down);
@@ -348,6 +353,7 @@ public class Box extends Actor {
             vectorActor.put(vnDown, this);
             curDirect = DOWN;
             curStatus = MOVE;
+            fireBoxChangedPositionEvent(prevPosition);
         }
     }
 
