@@ -97,10 +97,12 @@ public class Box extends Actor {
                         if (nLeft != null) {
                             fireContactEvent(nLeft);
                             if (nLeft instanceof Player) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Player) nLeft).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnLeft, this);
                             } else if (nLeft instanceof Bot) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Bot) nLeft).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnLeft, this);
@@ -130,10 +132,12 @@ public class Box extends Actor {
                         if (nRight != null) {
                             fireContactEvent(nRight);
                             if (nRight instanceof Player) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Player) nRight).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnRight, this);
                             } else if (nRight instanceof Bot) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Bot) nRight).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnRight, this);
@@ -163,10 +167,12 @@ public class Box extends Actor {
                         if (nUp != null) {
                             fireContactEvent(nUp);
                             if (nUp instanceof Player) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Player) nUp).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnUp, this);
                             } else if (nUp instanceof Bot) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Bot) nUp).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnUp, this);
@@ -196,10 +202,12 @@ public class Box extends Actor {
                         if (nDown != null) {
                             fireContactEvent(nDown);
                             if (nDown instanceof Player) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Player) nDown).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnDown, this);
                             } else if (nDown instanceof Bot) {
+                                fireBoxChangedPositionEvent(prevPosition);
                                 ((Bot) nDown).explosion();
                                 vectorActor.remove(getPosition());
                                 vectorActor.put(vnDown, this);
@@ -234,12 +242,14 @@ public class Box extends Actor {
                 vectorActor.put(vnRight, this);
                 curDirect = RIGHT;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
             } else if (nRight instanceof Bot) {
                 ((Bot) nRight).explosion();
                 vectorActor.remove(getPosition());
                 vectorActor.put(vnRight, this);
                 curDirect = RIGHT;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
             } else {
                 explosion();
             }
@@ -267,6 +277,7 @@ public class Box extends Actor {
                 player.explosion();
                 curDirect = LEFT;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
                 vectorActor.remove(getPosition());
                 vectorActor.put(vnLeft, this);
             } else if (nLeft instanceof Bot) {
@@ -275,6 +286,7 @@ public class Box extends Actor {
                 vectorActor.put(vnLeft, this);
                 curDirect = LEFT;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
             } else {
                 explosion();
             }
@@ -302,6 +314,7 @@ public class Box extends Actor {
                 player.explosion();
                 curDirect = UP;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
                 vectorActor.remove(getPosition());
                 vectorActor.put(vnUp, this);
             } else if (nUp instanceof Bot) {
@@ -310,6 +323,7 @@ public class Box extends Actor {
                 vectorActor.put(vnUp, this);
                 curDirect = UP;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
             } else {
                 explosion();
             }
@@ -337,6 +351,7 @@ public class Box extends Actor {
                 player.explosion();
                 curDirect = DOWN;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
                 vectorActor.remove(getPosition());
                 vectorActor.put(vnDown, this);
             } else if (nDown instanceof Bot) {
@@ -345,6 +360,7 @@ public class Box extends Actor {
                 vectorActor.put(vnDown, this);
                 curDirect = DOWN;
                 curStatus = MOVE;
+                fireBoxChangedPositionEvent(prevPosition);
             } else {
                 explosion();
             }
