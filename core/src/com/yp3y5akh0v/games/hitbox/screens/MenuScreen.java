@@ -1,6 +1,7 @@
 package com.yp3y5akh0v.games.hitbox.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,11 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.yp3y5akh0v.games.hitbox.HitBox;
-
-import java.util.Calendar;
 
 public class MenuScreen implements Screen {
 
@@ -23,9 +21,8 @@ public class MenuScreen implements Screen {
     public Stage stage;
     public Table uiTable;
     public Label gameTitle;
-    public TextButton playTextButton;
+    public TextButton singlePlayerTextButton;
     public TextButton quitTextButton;
-    public Label copyRightLabel;
     public Skin uiSkin;
 
     public MenuScreen(final HitBox hitBox) {
@@ -38,10 +35,10 @@ public class MenuScreen implements Screen {
 //        Create game title
         gameTitle = new Label("HitBox", uiSkin, "default");
 
-//        Create play text button
-        playTextButton = new TextButton("Play", uiSkin, "default");
-        playTextButton.setTouchable(Touchable.enabled);
-        playTextButton.addListener(new ClickListener() {
+//        Create single player text button
+        singlePlayerTextButton = new TextButton("Single Player", uiSkin, "default");
+        singlePlayerTextButton.setTouchable(Touchable.enabled);
+        singlePlayerTextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 hitBox.setScreen(new GameScreen("000", hitBox));
@@ -58,21 +55,15 @@ public class MenuScreen implements Screen {
             }
         });
 
-//        Create copyright label
-        copyRightLabel = new Label("Copyright " + Calendar.getInstance().get(Calendar.YEAR) +
-                " HitBox. All rights reserved.",
-                uiSkin, "default");
-        copyRightLabel.setAlignment(Align.center);
-
         uiTable = new Table();
         uiTable.setWidth(stage.getWidth());
         uiTable.setFillParent(true);
-        uiTable.add(gameTitle).colspan(2);
         uiTable.row();
-        uiTable.add(playTextButton);
+        uiTable.add(gameTitle);
+        uiTable.row();
+        uiTable.add(singlePlayerTextButton);
+        uiTable.row();
         uiTable.add(quitTextButton);
-        uiTable.row();
-        uiTable.add(copyRightLabel).colspan(2).right().padTop(50);
         stage.addActor(uiTable);
     }
 
@@ -90,6 +81,9 @@ public class MenuScreen implements Screen {
 
     public void update(float delta) {
         stage.act(delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
     }
 
     @Override
