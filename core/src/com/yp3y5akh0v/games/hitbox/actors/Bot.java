@@ -1,13 +1,13 @@
 package com.yp3y5akh0v.games.hitbox.actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.yp3y5akh0v.games.hitbox.HitBox;
-import com.yp3y5akh0v.games.hitbox.handlers.ContactEvent;
-import com.yp3y5akh0v.games.hitbox.handlers.ContactListener;
 import com.yp3y5akh0v.games.hitbox.screens.FlowField;
 import com.yp3y5akh0v.games.hitbox.screens.GameScreen;
 import com.yp3y5akh0v.games.hitbox.screens.Node;
@@ -20,9 +20,7 @@ public class Bot extends Actor {
 
     public Texture texture;
     public Rectangle rect;
-
-    public ContactEvent contactEvent;
-    public ContactListener contactListener;
+    public GameScreen gs;
 
     public FlowField flowField;
 
@@ -34,11 +32,11 @@ public class Bot extends Actor {
     public float y0Down, y1Down, y0Up, y1Up;
 
     public Bot(Texture texture, Rectangle rect,
-               ContactListener contactListener,
+               GameScreen gs,
                FlowField flowField) {
         this.texture = texture;
         this.rect = rect;
-        this.contactListener = contactListener;
+        this.gs = gs;
         this.flowField = flowField;
         curDT = 0;
         curStatus = STOP;
@@ -71,14 +69,12 @@ public class Bot extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        update(Gdx.graphics.getDeltaTime());
         batch.draw(texture, getX(), getY());
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
+    private void update(float delta) {
         if (curStatus == STOP) {
-            GameScreen gs = getGameScreen();
             HitBox hitbox = gs.hitbox;
             HashMap<Vector2, Actor> vectorActor = gs.vectorActor;
             Node botNode = flowField.mapNode.get(getDiscretePosition());
@@ -89,7 +85,6 @@ public class Bot extends Actor {
                     Vector2 vnUp = new Vector2(getX(), y1Up);
                     if (vectorActor.containsKey(vnUp)) {
                         Actor actor = vectorActor.get(vnUp);
-                        fireContactEvent(actor);
                         if (actor instanceof Player) {
                             ((Player) actor).explosion();
                             hitbox.soundManager.play("bot.eat");
@@ -112,7 +107,6 @@ public class Bot extends Actor {
                     Vector2 vnRight = new Vector2(x1Right, getY());
                     if (vectorActor.containsKey(vnRight)) {
                         Actor actor = vectorActor.get(vnRight);
-                        fireContactEvent(actor);
                         if (actor instanceof Player) {
                             curDirect = UNKNOWN;
                             ((Player) actor).explosion();
@@ -135,7 +129,6 @@ public class Bot extends Actor {
                     Vector2 vnDown = new Vector2(getX(), y1Down);
                     if (vectorActor.containsKey(vnDown)) {
                         Actor actor = vectorActor.get(vnDown);
-                        fireContactEvent(actor);
                         if (actor instanceof Player) {
                             curDirect = UNKNOWN;
                             ((Player) actor).explosion();
@@ -158,7 +151,6 @@ public class Bot extends Actor {
                     Vector2 vnLeft = new Vector2(x1Left, getY());
                     if (vectorActor.containsKey(vnLeft)) {
                         Actor actor = vectorActor.get(vnLeft);
-                        fireContactEvent(actor);
                         if (actor instanceof Player) {
                             curDirect = UNKNOWN;
                             ((Player) actor).explosion();
@@ -223,9 +215,13 @@ public class Bot extends Actor {
         }
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
     public void explosion() {
         curStatus = DEATH;
-        GameScreen gs = getGameScreen();
         gs.vectorActor.remove(getDiscretePosition());
         gs.bots.removeValue(this, true);
         gs.countBotLabel.setText("Bot: " + gs.bots.size);
@@ -248,15 +244,6 @@ public class Bot extends Actor {
 
     public Vector2 getPosition() {
         return new Vector2(getX(), getY());
-    }
-
-    public GameScreen getGameScreen() {
-        return ((GameScreen) contactListener);
-    }
-
-    public void fireContactEvent(Actor actor) {
-        contactEvent = new ContactEvent(this, actor);
-        contactListener.beginContact(contactEvent);
     }
 
 }

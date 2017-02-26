@@ -3,20 +3,19 @@ package com.yp3y5akh0v.games.hitbox.screens;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Queue;
-import com.yp3y5akh0v.games.hitbox.actors.Block;
 import com.yp3y5akh0v.games.hitbox.actors.Box;
 import com.yp3y5akh0v.games.hitbox.actors.Player;
-import com.yp3y5akh0v.games.hitbox.handlers.BoxChangedEvent;
-import com.yp3y5akh0v.games.hitbox.handlers.BoxChangedListener;
-import com.yp3y5akh0v.games.hitbox.handlers.TargetChangedEvent;
-import com.yp3y5akh0v.games.hitbox.handlers.TargetChangedListener;
+import com.yp3y5akh0v.games.hitbox.handlers.ObjectChangedEvent;
+import com.yp3y5akh0v.games.hitbox.handlers.ObjectChangedListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.yp3y5akh0v.games.hitbox.constans.Constants.*;
 
-public class FlowField implements TargetChangedListener, BoxChangedListener {
+public class FlowField implements ObjectChangedListener {
 
     public GameScreen gs;
     public boolean targetRemoved;
@@ -24,8 +23,19 @@ public class FlowField implements TargetChangedListener, BoxChangedListener {
     public HashMap<Vector2, Node> mapNode;
     public boolean[] usedNode;
 
+    public List<Class> obstacleObjectTypeList;
+
     public FlowField(GameScreen gs) {
         this.gs = gs;
+        this.obstacleObjectTypeList = new ArrayList<>();
+    }
+
+    public void addObstacleObjectType(Class c) {
+        obstacleObjectTypeList.add(c);
+    }
+
+    public void removeObstacleObjectType(Class c) {
+        obstacleObjectTypeList.remove(c);
     }
 
     public void init() {
@@ -38,7 +48,7 @@ public class FlowField implements TargetChangedListener, BoxChangedListener {
                 boolean isPassable = true;
                 if (vectorActor.containsKey(v)) {
                     Actor actor = vectorActor.get(v);
-                    if (actor instanceof Block || actor instanceof Box)
+                    if (obstacleObjectTypeList.contains(actor.getClass()))
                         isPassable = false;
                 }
                 mapNode.put(v, new Node(v, isPassable));
@@ -148,43 +158,41 @@ public class FlowField implements TargetChangedListener, BoxChangedListener {
     }
 
     @Override
-    public void targetPositionChanged(TargetChangedEvent tce) {
-        Player target = (Player) tce.getSource();
-        calculateField(target.getDiscretePosition());
-    }
+    public void positionChanged(ObjectChangedEvent oce, Vector2 prevPosition) {
+        Object obj = oce.getSource();
+        if (obj instanceof Player) {
+            calculateField(((Player) obj).getDiscretePosition());
+        } else if (obj instanceof Box) {
+            if (!targetRemoved) {
+                Box box = (Box) obj;
+                Node oldObstacle = mapNode.get(prevPosition);
+                Node newObstacle = mapNode.get(box.getDiscretePosition());
+                oldObstacle.isPassable = true;
+                newObstacle.isPassable = false;
 
-    @Override
-    public void targetRemoved(TargetChangedEvent tce) {
-//        need to modify if MultiPlayer. In development process... :D
-        resetAll();
-        targetRemoved = true;
-    }
-
-    @Override
-    public void boxPositionChanged(BoxChangedEvent bce, Vector2 prevPosition) {
-        if (!targetRemoved) {
-            Box box = (Box) bce.getSource();
-            Node oldObstacle = mapNode.get(prevPosition);
-            Node newObstacle = mapNode.get(box.getDiscretePosition());
-            oldObstacle.isPassable = true;
-            newObstacle.isPassable = false;
-
-            Player player = gs.player;
-            Vector2 playerPos = player.getDiscretePosition();
-            calculateField(playerPos);
+                Player player = gs.player;
+                Vector2 playerPos = player.getDiscretePosition();
+                calculateField(playerPos);
+            }
         }
     }
 
     @Override
-    public void boxRemoved(BoxChangedEvent bce) {
-        if (!targetRemoved) {
-            Box box = (Box) bce.getSource();
-            Node rNode = mapNode.get(box.getPosition());
-            rNode.isPassable = true;
+    public void removed(ObjectChangedEvent oce) {
+        Object obj = oce.getSource();
+        if (obj instanceof Player) {
+            resetAll();
+            targetRemoved = true;
+        } else if (obj instanceof Box) {
+            if (!targetRemoved) {
+                Box box = (Box) obj;
+                Node rNode = mapNode.get(box.getPosition());
+                rNode.isPassable = true;
 
-            Player player = gs.player;
-            Vector2 playerPos = player.getDiscretePosition();
-            calculateField(playerPos);
+                Player player = gs.player;
+                Vector2 playerPos = player.getDiscretePosition();
+                calculateField(playerPos);
+            }
         }
     }
 }

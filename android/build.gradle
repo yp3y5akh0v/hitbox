@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "23.0.3"
-    compileSdkVersion 23
+    buildToolsVersion "21.1.1"
+    compileSdkVersion 21
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -16,8 +16,8 @@ android {
     }
     defaultConfig {
         applicationId "com.yp3y5akh0v.games.hitbox"
-        minSdkVersion 8
-        targetSdkVersion 23
+        minSdkVersion 7
+        targetSdkVersion 21
     }
 }
 
@@ -82,8 +82,8 @@ eclipse {
     }
 
     jdt {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
     }
 
     classpath {
@@ -126,6 +126,6 @@ idea {
 }
 
 compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }

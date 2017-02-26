@@ -28,14 +28,11 @@ public class MenuScreen implements Screen {
     public MenuScreen(final HitBox hitBox) {
         this.hitBox = hitBox;
 
-//      Create stage
         stage = new Stage(new ScreenViewport());
         uiSkin = new Skin(Gdx.files.internal("font/default.json"));
 
-//        Create game title
         gameTitle = new Label("HitBox", uiSkin, "default");
 
-//        Create single player text button
         singlePlayerTextButton = new TextButton("Single Player", uiSkin, "default");
         singlePlayerTextButton.setTouchable(Touchable.enabled);
         singlePlayerTextButton.addListener(new ClickListener() {
@@ -45,7 +42,6 @@ public class MenuScreen implements Screen {
             }
         });
 
-//        Create quit text button
         quitTextButton = new TextButton("Quit", uiSkin, "default");
         quitTextButton.setTouchable(Touchable.enabled);
         quitTextButton.addListener(new ClickListener() {

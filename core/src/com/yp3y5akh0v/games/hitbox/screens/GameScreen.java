@@ -33,14 +33,10 @@ import com.yp3y5akh0v.games.hitbox.actors.Block;
 import com.yp3y5akh0v.games.hitbox.actors.Bot;
 import com.yp3y5akh0v.games.hitbox.actors.Box;
 import com.yp3y5akh0v.games.hitbox.actors.Player;
-import com.yp3y5akh0v.games.hitbox.handlers.ContactEvent;
-import com.yp3y5akh0v.games.hitbox.handlers.ContactListener;
-import com.yp3y5akh0v.games.hitbox.handlers.PushEvent;
-import com.yp3y5akh0v.games.hitbox.handlers.PushListener;
 
 import java.util.HashMap;
 
-public class GameScreen implements Screen, ContactListener, PushListener {
+public class GameScreen implements Screen {
 
     public final HitBox hitbox;
 
@@ -116,6 +112,8 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
         vectorActor = new HashMap<>();
         flowField = new FlowField(this);
+        flowField.addObstacleObjectType(Box.class);
+        flowField.addObstacleObjectType(Block.class);
 
         blocks = new Array<>();
         try {
@@ -268,7 +266,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
         //    Bot start chasing player :D !
         flowField.init();
-        player.fireTargetChangedEvent();
+        player.fireObjectPositionChangedEvent();
     }
 
     public void loadBoxes() throws ReflectionException {
@@ -321,9 +319,8 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
             player = new Player(cell.getTile().getTextureRegion().getTexture(),
                     rect,
-                    this, // ContactListener
-                    flowField, // TargetListener
-                    this); // PushListener
+                    this,
+                    flowField);
 
             vectorActor.put(new Vector2(player.getX(), player.getY()), player);
             cell.setTile(null);
@@ -343,7 +340,7 @@ public class GameScreen implements Screen, ContactListener, PushListener {
 
             Bot bot = new Bot(cell.getTile().getTextureRegion().getTexture(),
                     rect,
-                    this, // ContactListener
+                    this,
                     flowField);
             vectorActor.put(new Vector2(bot.getX(), bot.getY()), bot);
             cell.setTile(null);
@@ -422,28 +419,5 @@ public class GameScreen implements Screen, ContactListener, PushListener {
         winStage.dispose();
         gameOverStage.dispose();
         uiSkin.dispose();
-    }
-
-    @Override
-    public void beginContact(ContactEvent ce) {
-        Actor A = (Actor) ce.getSource(), B = (Actor) ce.getcSource();
-        System.out.println("ContactListener");
-        System.out.println("****************************");
-        System.out.println(A.getClass().getSimpleName() + ": (" + A.getX() + ", " + A.getY() + ")");
-        System.out.println(B.getClass().getSimpleName() + ": (" + B.getX() + ", " + B.getY() + ")");
-        System.out.println("****************************");
-        System.out.println();
-    }
-
-    @Override
-    public void push(PushEvent pe) {
-        Actor playerActor = (Actor) pe.getSource();
-        Actor pushedActor = (Actor) pe.getPushedObject();
-        System.out.println("PushListener");
-        System.out.println("****************************");
-        System.out.println(playerActor.getClass().getSimpleName() + ": (" + playerActor.getX() + ", " + playerActor.getY() + ")");
-        System.out.println(pushedActor.getClass().getSimpleName() + ": (" + pushedActor.getX() + ", " + pushedActor.getY() + ")");
-        System.out.println("****************************");
-        System.out.println();
     }
 }
